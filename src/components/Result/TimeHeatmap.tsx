@@ -1,8 +1,8 @@
-import type { Answer } from '../../store/session';
+import type { BatteryAnswer } from '../../lib/battery';
 
-interface Props { answers: Answer[]; avgTimeMs: number; }
+interface Props { answers: BatteryAnswer[]; avgTimeMs: number; }
 
-function color(a: Answer, avg: number): string {
+function color(a: BatteryAnswer, avg: number): string {
   if (a.timedOut) return '#6b6b6b';
   const slow = avg > 0 && a.timeMs > avg * 1.5;
   if (a.correct && !slow) return '#2ecc71';

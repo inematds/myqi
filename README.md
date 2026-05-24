@@ -18,12 +18,28 @@ Teste de QI online, gratuito e open-source. Baseado em matrizes progressivas (es
 - **Export PDF** do relatório
 - **Persistência** local (LocalStorage) + opcional Supabase para sessões anônimas
 
-## Roadmap V2
+## V2 (já implementado) — escolha na Home
 
-- Bateria múltipla (verbal, numérico, 3D, memória de trabalho, velocidade de processamento)
-- Score composto + perfil radar
-- Anti-cheat: tela cheia, detecção de mudança de aba, rate limit
+Versão de bateria completa com 5 subtestes:
+
+| Subteste | Itens | O que mede |
+|---|---|---|
+| Raciocínio Fluido (matrizes 3×3) | 8 | inteligência fluida |
+| Raciocínio Verbal (analogias PT-BR) | 8 | inteligência cristalizada |
+| Raciocínio Numérico (séries) | 8 | raciocínio quantitativo |
+| Rotação Mental (2D rotação vs espelho) | 6 | habilidade espacial |
+| Memória de Trabalho (digit span reverso) | 5 | memória operacional |
+
+V2 adiciona:
+- **Score composto** (média dos z-scores por subteste) + IC95% mais apertado
+- **Perfil cognitivo** em gráfico radar
+- **Anti-cheat passivo:** contagem de perdas de foco / troca de aba, exibido no relatório
+
+## Roadmap futuro
+
+- Anti-cheat ativo: fullscreen obrigatório, bloqueio de copy-paste, rate limit por device
 - Recalibração contínua via IRT 2PL com dados anônimos
+- Subtestes adicionais: velocidade de processamento (symbol search), conhecimento geral
 
 ## Stack
 

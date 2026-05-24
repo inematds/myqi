@@ -4,24 +4,25 @@ import { useSession } from '../store/session';
 import { score } from '../lib/scoring';
 import NormalCurve from '../components/Result/NormalCurve';
 import TimeHeatmap from '../components/Result/TimeHeatmap';
+import SubtestRadar from '../components/Result/SubtestRadar';
 import { exportPDF } from '../components/Result/PDFExport';
 import { saveAnonymousSession } from '../lib/supabase';
+import { SUBTEST_LABEL } from '../lib/battery';
 
 export default function Result() {
   const nav = useNavigate();
-  const { user, profile, answers, items, reset, startedAt, finishedAt } = useSession();
+  const { user, profile, version, answers, reset, startedAt, finishedAt, tabBlurs } = useSession();
 
   useEffect(() => {
-    if (!user || answers.length === 0) {
-      nav('/');
-    }
+    if (!user || answers.length === 0) nav('/');
   }, [user, answers, nav]);
 
-  const result = useMemo(() => (user ? score(answers, user.age) : null), [answers, user]);
+  const result = useMemo(() => (user ? score(answers, user.age, version) : null), [answers, user, version]);
 
   useEffect(() => {
     if (!result || !user) return;
     saveAnonymousSession({
+      version,
       age: user.age,
       gender: user.gender || null,
       education: user.education || null,
@@ -31,13 +32,14 @@ export default function Result() {
       total: result.totalItems,
       avg_time_ms: Math.round(result.avgTimeMs),
       timeouts: result.timeouts,
+      tab_blurs: tabBlurs,
       duration_ms: startedAt && finishedAt ? finishedAt - startedAt : null,
-      answers: answers.map((a, i) => ({ i, c: a.correct, t: a.timeMs, to: a.timedOut, d: a.difficulty })),
+      per_subtest: result.perSubtest.map((s) => ({ kind: s.kind, iq: s.iq, c: s.correct, t: s.total })),
+      answers: answers.map((a, i) => ({ i, k: a.kind, c: a.correct, t: a.timeMs, to: a.timedOut, d: a.difficulty })),
     });
-  }, [result, user, profile, answers, startedAt, finishedAt]);
+  }, [result, user, profile, answers, startedAt, finishedAt, tabBlurs, version]);
 
   if (!result || !user) return null;
-
   const showNumericIQ = profile !== 'kids';
   const totalTime = startedAt && finishedAt ? Math.round((finishedAt - startedAt) / 1000) : 0;
 
@@ -45,14 +47,19 @@ export default function Result() {
     <div className="min-h-screen p-4">
       <div className="max-w-4xl mx-auto" id="report">
         <div className="card mb-4">
-          <h1 className="title mb-2">Resultado MyQI</h1>
-          <p className="muted">Perfil: {profile} · Idade: {user.age} · Duração: {Math.floor(totalTime / 60)}min {totalTime % 60}s</p>
+          <h1 className="title mb-2">Resultado MyQI · {version.toUpperCase()}</h1>
+          <p className="muted">
+            Perfil: {profile} · Idade: {user.age} · Duração: {Math.floor(totalTime / 60)}min {totalTime % 60}s
+            {version === 'v2' && tabBlurs > 0 && (
+              <> · <span style={{ color: 'var(--warn)' }}>{tabBlurs} perda(s) de foco</span></>
+            )}
+          </p>
         </div>
 
         <div className="card mb-4 text-center">
           {showNumericIQ ? (
             <>
-              <div className="muted">QI estimado</div>
+              <div className="muted">QI estimado {version === 'v2' && '(composto)'}</div>
               <div style={{ fontSize: 72, fontWeight: 900, lineHeight: 1 }}>{result.iq}</div>
               <div className="muted">IC 95%: {result.iqCI[0]} — {result.iqCI[1]}</div>
               <div className="mt-3 text-lg font-semibold">{result.band}</div>
@@ -74,6 +81,21 @@ export default function Result() {
           </div>
         )}
 
+        {version === 'v2' && result.perSubtest.length > 1 && (
+          <div className="card mb-4">
+            <h2 className="font-semibold mb-3">Perfil cognitivo por subteste</h2>
+            <SubtestRadar perSubtest={result.perSubtest} />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-2 mt-4 text-sm">
+              {result.perSubtest.map((s) => (
+                <div key={s.kind} className="flex justify-between" style={{ padding: '8px 12px', background: 'rgba(255,255,255,0.04)', borderRadius: 10 }}>
+                  <span>{SUBTEST_LABEL[s.kind]}</span>
+                  <span><strong>{s.iq}</strong> <span className="muted">({s.correct}/{s.total})</span></span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
         <div className="card mb-4">
           <h2 className="font-semibold mb-3">Desempenho por dificuldade</h2>
           <div className="grid grid-cols-3 gap-3 text-center">
@@ -82,7 +104,7 @@ export default function Result() {
               const pct = b.total ? Math.round((b.correct / b.total) * 100) : 0;
               return (
                 <div key={k} style={{ background: 'rgba(255,255,255,0.04)', borderRadius: 12, padding: 12 }}>
-                  <div className="muted text-sm capitalize">{k === 'easy' ? 'Fácil' : k === 'medium' ? 'Médio' : 'Difícil'}</div>
+                  <div className="muted text-sm">{k === 'easy' ? 'Fácil' : k === 'medium' ? 'Médio' : 'Difícil'}</div>
                   <div className="text-2xl font-bold">{b.correct}/{b.total}</div>
                   <div className="muted text-sm">{pct}%</div>
                 </div>
@@ -101,15 +123,15 @@ export default function Result() {
           </div>
           {result.slowItems.length > 0 && (
             <div className="muted text-sm mt-2">
-              Você gastou mais tempo nas questões: {result.slowItems.map((i) => i + 1).join(', ')}.
+              Tempo elevado em: {result.slowItems.map((i) => i + 1).join(', ')}.
               {result.slowItems.filter((i) => !answers[i].correct).length > 0 &&
-                ` Em ${result.slowItems.filter((i) => !answers[i].correct).length} delas, a resposta foi errada — possível indicador de dificuldade com padrões mais complexos.`}
+                ` Em ${result.slowItems.filter((i) => !answers[i].correct).length} delas, a resposta foi errada — possível indicador de itens fora da sua zona de domínio.`}
             </div>
           )}
         </div>
 
         <div className="card mb-4 text-sm muted">
-          <strong>Importante:</strong> esta é uma estimativa baseada em itens estilo Raven/ICAR.
+          <strong>Importante:</strong> estimativa baseada em itens estilo Raven/ICAR.
           Não substitui avaliação psicométrica profissional (WAIS-IV, WISC-V).
           Fatores como fadiga, ambiente e familiaridade com testes influenciam o resultado.
         </div>
@@ -121,7 +143,7 @@ export default function Result() {
           className="btn-ghost btn"
           onClick={() => {
             const url = window.location.origin;
-            navigator.clipboard?.writeText(`Fiz o MyQI: ${showNumericIQ ? `QI ${result.iq}` : result.band} — ${url}`);
+            navigator.clipboard?.writeText(`Fiz o MyQI (${version}): ${showNumericIQ ? `QI ${result.iq}` : result.band} — ${url}`);
           }}
         >
           Copiar resumo
