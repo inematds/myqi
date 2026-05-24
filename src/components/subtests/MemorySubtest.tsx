@@ -5,15 +5,18 @@ interface Props {
   item: BatteryItem;
   onAnswer: (selected: any, timeMs: number, timedOut: boolean, correct: boolean) => void;
   softTimeMs: number;
+  locked?: boolean;
+  userSelected?: string | null;
+  hideSkip?: boolean;
 }
 
 type Phase = 'intro' | 'showing' | 'input';
 
-export default function MemorySubtest({ item, onAnswer }: Props) {
+export default function MemorySubtest({ item, onAnswer, locked = false, userSelected, hideSkip = false }: Props) {
   const digits: string[] = item.data.digits;
-  const [phase, setPhase] = useState<Phase>('intro');
+  const [phase, setPhase] = useState<Phase>(locked ? 'input' : 'intro');
   const [showIdx, setShowIdx] = useState(0);
-  const [input, setInput] = useState('');
+  const [input, setInput] = useState(locked && userSelected ? userSelected : '');
   const [startedAt, setStartedAt] = useState<number>(0);
 
   useEffect(() => {
@@ -43,25 +46,28 @@ export default function MemorySubtest({ item, onAnswer }: Props) {
     onAnswer(input, timeMs, timedOut, correct);
   }
 
+  const isWrong = locked && userSelected !== item.correctAnswer;
+
   return (
     <div className="card text-center">
       <p className="muted text-sm mb-2">Memória de Trabalho — Span Reverso</p>
       <p className="muted mb-4">
-        Memorize os {digits.length} dígitos exibidos e depois digite-os em <strong>ordem inversa</strong>.
+        Sequência de <strong>{digits.length}</strong> dígitos. Digite em <strong>ordem inversa</strong>.
       </p>
 
-      {phase === 'intro' && (
+      {!locked && phase === 'intro' && (
         <button className="btn" onClick={start}>Começar — mostrar dígitos</button>
       )}
 
-      {phase === 'showing' && (
+      {!locked && phase === 'showing' && (
         <div style={{ fontSize: 96, fontWeight: 900, lineHeight: 1, margin: '2rem 0', color: 'var(--accent)' }}>
           {digits[showIdx]}
         </div>
       )}
 
-      {phase === 'input' && (
+      {!locked && phase === 'input' && (
         <div>
+          <p className="muted text-sm mb-2">Sequência mostrada: <strong>{digits.join(' ')}</strong></p>
           <input
             className="input text-center"
             style={{ fontSize: 28, letterSpacing: 6, fontWeight: 700, maxWidth: 320, margin: '1rem auto' }}
@@ -72,9 +78,37 @@ export default function MemorySubtest({ item, onAnswer }: Props) {
             inputMode="numeric"
           />
           <div className="flex justify-center gap-3 mt-3">
-            <button className="btn-ghost btn" onClick={() => submit(true)}>Pular</button>
+            {!hideSkip && <button className="btn-ghost btn" onClick={() => submit(true)}>Pular</button>}
             <button className="btn" disabled={input.length === 0} onClick={() => submit(false)}>Confirmar</button>
           </div>
+        </div>
+      )}
+
+      {locked && (
+        <div style={{ marginTop: 12 }}>
+          <p className="muted text-sm">Sequência: <strong>{digits.join(' ')}</strong></p>
+          <p className="muted text-sm mt-2">
+            Sua resposta:
+            <span
+              style={{
+                fontWeight: 800,
+                fontSize: 22,
+                letterSpacing: 4,
+                marginLeft: 8,
+                color: isWrong ? '#e74c3c' : '#2ecc71',
+              }}
+            >
+              {userSelected || '—'}
+            </span>
+          </p>
+          {isWrong && (
+            <p className="muted text-sm mt-1">
+              Correto:
+              <span style={{ fontWeight: 800, fontSize: 22, letterSpacing: 4, marginLeft: 8, color: '#2ecc71' }}>
+                {item.correctAnswer}
+              </span>
+            </p>
+          )}
         </div>
       )}
     </div>

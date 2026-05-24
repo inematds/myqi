@@ -158,6 +158,9 @@ select.input option { color: #111; background: #fff; }
 }
 .option-cell:hover { border-color: var(--accent); }
 .option-cell.selected { border-color: var(--accent); background: rgba(91,124,250,0.12); }
+.option-cell.reveal-correct { border-color: #2ecc71 !important; background: rgba(46,204,113,0.18) !important; }
+.option-cell.reveal-wrong { border-color: #e74c3c !important; background: rgba(231,76,60,0.18) !important; }
+.option-cell[disabled], .option-cell:disabled { cursor: default; }
 
 /* Frame consistente do subteste: garante mesma altura entre questões 1..35 */
 .subtest-frame {
