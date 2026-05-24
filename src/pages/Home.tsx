@@ -83,7 +83,7 @@ export default function Home() {
 
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="block mb-1 font-semibold text-sm">Gênero <span className="muted">(opc.)</span></label>
+              <label className="block mb-1 font-semibold">Gênero <span className="muted">(opc.)</span></label>
               <select className="input" value={gender} onChange={(e) => setGender(e.target.value as any)}>
                 <option value="">—</option>
                 <option value="f">Feminino</option>
@@ -92,7 +92,7 @@ export default function Home() {
               </select>
             </div>
             <div>
-              <label className="block mb-1 font-semibold text-sm">Escolaridade <span className="muted">(opc.)</span></label>
+              <label className="block mb-1 font-semibold">Escolaridade <span className="muted">(opc.)</span></label>
               <select className="input" value={education} onChange={(e) => setEducation(e.target.value)}>
                 <option value="">—</option>
                 <option value="fund">Fundamental</option>

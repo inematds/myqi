@@ -28,7 +28,7 @@ export default function NumericSubtest({ item, onAnswer, softTimeMs }: Props) {
       <div className="text-center mb-6" style={{ fontSize: 28, fontWeight: 800, letterSpacing: 2 }}>
         {series.join(', ')}, <span style={{ color: 'var(--accent)' }}>?</span>
       </div>
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-2 gap-3" style={{ maxWidth: 480, margin: '0 auto' }}>
         {options.map((opt: number, i: number) => (
           <button
             key={i}

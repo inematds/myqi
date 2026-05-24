@@ -4,3 +4,19 @@
 [2026-05-24T16:48:42Z] ERR trap at line 67; failing open
 [2026-05-24T17:10:20Z] Hook fired. Input bytes: 2015
 [2026-05-24T17:10:20Z] ERR trap at line 67; failing open
+[2026-05-24T17:24:57Z] Hook fired. Input bytes: 2200
+[2026-05-24T17:24:57Z] ERR trap at line 67; failing open
+[2026-05-24T17:30:27Z] Hook fired. Input bytes: 820
+[2026-05-24T17:30:27Z] ERR trap at line 67; failing open
+[2026-05-24T17:30:52Z] Hook fired. Input bytes: 655
+[2026-05-24T17:30:52Z] ERR trap at line 67; failing open
+[2026-05-24T20:25:36Z] Hook fired. Input bytes: 1739
+[2026-05-24T20:25:36Z] ERR trap at line 67; failing open
+[2026-05-24T20:54:44Z] Hook fired. Input bytes: 655
+[2026-05-24T20:54:44Z] ERR trap at line 67; failing open
+[2026-05-24T21:01:18Z] Hook fired. Input bytes: 779
+[2026-05-24T21:01:18Z] ERR trap at line 67; failing open
+[2026-05-24T21:09:14Z] Hook fired. Input bytes: 674
+[2026-05-24T21:09:14Z] ERR trap at line 67; failing open
+[2026-05-24T21:10:23Z] Hook fired. Input bytes: 646
+[2026-05-24T21:10:23Z] ERR trap at line 67; failing open

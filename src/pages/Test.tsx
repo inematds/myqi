@@ -87,7 +87,7 @@ export default function Test() {
     <div className="min-h-screen">
       <Timer startedAt={startedAt} budgetMs={budget} onExpire={handleExpire} visible={showTimer} />
 
-      <div className="max-w-4xl mx-auto p-4">
+      <div className="max-w-2xl mx-auto p-4">
         <div className="flex justify-between items-center mb-3 muted text-sm">
           <span>{SUBTEST_LABEL[item.kind]} — {indexInKind + 1}/{sameKindCount}</span>
           <span>Progresso geral: {currentIndex + 1}/{items.length}</span>
@@ -100,11 +100,13 @@ export default function Test() {
           </div>
         )}
 
-        {item.kind === 'matrix' && <MatrixSubtest key={item.id} item={item} onAnswer={handleAnswer} softTimeMs={softT} />}
-        {item.kind === 'verbal' && <VerbalSubtest key={item.id} item={item} onAnswer={handleAnswer} softTimeMs={softT} />}
-        {item.kind === 'numeric' && <NumericSubtest key={item.id} item={item} onAnswer={handleAnswer} softTimeMs={softT} />}
-        {item.kind === 'rotation' && <RotationSubtest key={item.id} item={item} onAnswer={handleAnswer} softTimeMs={softT} />}
-        {item.kind === 'memory' && <MemorySubtest key={item.id} item={item} onAnswer={handleAnswer} softTimeMs={softT} />}
+        <div className="subtest-frame">
+          {item.kind === 'matrix' && <MatrixSubtest key={item.id} item={item} onAnswer={handleAnswer} softTimeMs={softT} />}
+          {item.kind === 'verbal' && <VerbalSubtest key={item.id} item={item} onAnswer={handleAnswer} softTimeMs={softT} />}
+          {item.kind === 'numeric' && <NumericSubtest key={item.id} item={item} onAnswer={handleAnswer} softTimeMs={softT} />}
+          {item.kind === 'rotation' && <RotationSubtest key={item.id} item={item} onAnswer={handleAnswer} softTimeMs={softT} />}
+          {item.kind === 'memory' && <MemorySubtest key={item.id} item={item} onAnswer={handleAnswer} softTimeMs={softT} />}
+        </div>
       </div>
     </div>
   );

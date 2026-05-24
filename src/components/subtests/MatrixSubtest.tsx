@@ -26,7 +26,7 @@ export default function MatrixSubtest({ item, onAnswer, softTimeMs }: Props) {
     <>
       <div className="card mb-4">
         <p className="muted mb-3 text-sm">Identifique o padrão e escolha a peça que completa a matriz. ⏱ {(elapsed / 1000).toFixed(0)}s {elapsed > softTimeMs && '· tempo elevado'}</p>
-        <div className="grid grid-cols-3 gap-2" style={{ maxWidth: 380, margin: '0 auto' }}>
+        <div className="grid grid-cols-3 gap-2" style={{ maxWidth: 480, margin: '0 auto' }}>
           {item.data.matrix.map((c: any, i: number) => (
             <div key={i} className="option-cell" style={{ cursor: 'default' }}>
               <CellView cell={c} />
@@ -36,7 +36,7 @@ export default function MatrixSubtest({ item, onAnswer, softTimeMs }: Props) {
       </div>
       <div className="card">
         <p className="muted mb-3 text-sm">Alternativas:</p>
-        <div className="grid grid-cols-4 gap-2">
+        <div className="grid grid-cols-4 gap-2" style={{ maxWidth: 480, margin: '0 auto' }}>
           {item.data.options.map((opt: any, i: number) => (
             <button
               key={i}

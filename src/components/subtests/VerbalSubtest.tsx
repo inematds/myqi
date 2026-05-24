@@ -27,7 +27,7 @@ export default function VerbalSubtest({ item, onAnswer, softTimeMs }: Props) {
       <p className="text-xl mb-6">
         <strong>{pair[0]}</strong> está para <strong>{pair[1]}</strong> assim como <strong>{target}</strong> está para…
       </p>
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-2 gap-3" style={{ maxWidth: 480, margin: '0 auto' }}>
         {options.map((opt: string, i: number) => (
           <button
             key={i}

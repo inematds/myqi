@@ -35,7 +35,7 @@ export default function RotationSubtest({ item, onAnswer, softTimeMs }: Props) {
       <div className="card mb-4">
         <p className="muted text-sm mb-2">Rotação Mental · ⏱ {(elapsed / 1000).toFixed(0)}s {elapsed > softTimeMs && '· tempo elevado'}</p>
         <p className="muted mb-3">Qual das alternativas é a forma original <strong>rotacionada</strong> (sem espelhamento)?</p>
-        <div style={{ width: 140, margin: '0 auto' }}>
+        <div style={{ width: 160, margin: '0 auto' }}>
           <div className="option-cell" style={{ cursor: 'default' }}>
             <ShapeSVG pts={base} color="#7c5bfa" />
           </div>
@@ -43,7 +43,7 @@ export default function RotationSubtest({ item, onAnswer, softTimeMs }: Props) {
         </div>
       </div>
       <div className="card">
-        <div className="grid grid-cols-4 gap-2">
+        <div className="grid grid-cols-4 gap-2" style={{ maxWidth: 480, margin: '0 auto' }}>
           {options.map((opt: [number, number][], i: number) => (
             <button
               key={i}

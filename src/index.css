@@ -103,6 +103,8 @@ body {
   background: white;
   border-color: #d6d6d6;
 }
+/* Fix select options legibility (browsers herdam fundo claro por default) */
+select.input option { color: #111; background: #fff; }
 
 .title { font-size: var(--fs-title); font-weight: 800; line-height: 1.15; }
 .muted { color: var(--muted); }
@@ -123,3 +125,12 @@ body {
 }
 .option-cell:hover { border-color: var(--accent); }
 .option-cell.selected { border-color: var(--accent); background: rgba(91,124,250,0.12); }
+
+/* Frame consistente do subteste: garante mesma altura entre questões 1..35 */
+.subtest-frame {
+  min-height: 640px;
+  display: flex;
+  flex-direction: column;
+}
+.subtest-frame > .card { flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
+.subtest-frame > .card + .card { margin-top: 0; }
