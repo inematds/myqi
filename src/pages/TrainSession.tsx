@@ -146,25 +146,28 @@ export default function TrainSession() {
           )}
         </div>
 
-        {answered && (
-          <div className="card mt-4">
-            <div
-              style={{
-                display: 'inline-block',
-                padding: '6px 14px',
-                borderRadius: 999,
-                background: current.correct ? 'rgba(46,204,113,0.18)' : 'rgba(231,76,60,0.18)',
-                color: current.correct ? '#2ecc71' : '#e74c3c',
-                fontWeight: 700,
-                marginBottom: 10,
-              }}
-            >
-              {current.correct ? '✓ Correto!' : '✗ Errado'}
+        <div className="reveal-slot mt-4">
+          {answered && (
+            <div className="card">
+              <div
+                style={{
+                  display: 'inline-block',
+                  padding: '6px 14px',
+                  borderRadius: 999,
+                  background: current.correct ? 'rgba(46,204,113,0.18)' : 'rgba(231,76,60,0.18)',
+                  color: current.correct ? '#2ecc71' : '#e74c3c',
+                  fontWeight: 700,
+                  marginBottom: 10,
+                  width: 'fit-content',
+                }}
+              >
+                {current.correct ? '✓ Correto!' : '✗ Errado'}
+              </div>
+              <h3 className="font-semibold mb-1">Como resolver:</h3>
+              <p className="muted">{itemExplanation(current.item)}</p>
             </div>
-            <h3 className="font-semibold mb-1">Como resolver:</h3>
-            <p className="muted">{itemExplanation(current.item)}</p>
-          </div>
-        )}
+          )}
+        </div>
 
         <div className="flex justify-between mt-4 flex-wrap gap-2">
           <button className="btn-ghost btn" disabled={idx === 0} onClick={goPrev}>

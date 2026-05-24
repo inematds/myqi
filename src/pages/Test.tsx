@@ -101,20 +101,21 @@ export default function Test() {
           </div>
         )}
 
-        {isFirstOfKind && version === 'v2' && profile !== 'kids' && (
-          <div className="card mb-3" style={{ background: 'rgba(124,91,250,0.10)' }}>
-            <strong>Próximo bloco: {SUBTEST_LABEL[item.kind]}</strong>
-            <p className="muted text-sm mt-1">{instructions(item.kind)}</p>
-          </div>
-        )}
-
-        {isFirstOfKind && profile === 'kids' && (
-          <div className="card mb-3" style={{ background: 'linear-gradient(135deg,#fff4cf,#ffd6e8)', border: '3px dashed white' }}>
-            <div style={{ fontSize: 40, textAlign: 'center', marginBottom: 6 }}>{kindEmoji(item.kind)}</div>
-            <strong style={{ fontSize: 22, display: 'block', textAlign: 'center' }}>{kindKidsLabel(item.kind)}</strong>
-            <p className="muted text-sm mt-2 text-center">{kindKidsInstruction(item.kind)}</p>
-          </div>
-        )}
+        <div style={{ minHeight: (isFirstOfKind && version === 'v2') ? 100 : 0, marginBottom: isFirstOfKind && version === 'v2' ? 12 : 0 }}>
+          {isFirstOfKind && version === 'v2' && profile !== 'kids' && (
+            <div className="card" style={{ background: 'rgba(124,91,250,0.10)' }}>
+              <strong>Próximo bloco: {SUBTEST_LABEL[item.kind]}</strong>
+              <p className="muted text-sm mt-1">{instructions(item.kind)}</p>
+            </div>
+          )}
+          {isFirstOfKind && profile === 'kids' && (
+            <div className="card" style={{ background: 'linear-gradient(135deg,#fff4cf,#ffd6e8)', border: '3px dashed white' }}>
+              <div style={{ fontSize: 40, textAlign: 'center', marginBottom: 6 }}>{kindEmoji(item.kind)}</div>
+              <strong style={{ fontSize: 22, display: 'block', textAlign: 'center' }}>{kindKidsLabel(item.kind)}</strong>
+              <p className="muted text-sm mt-2 text-center">{kindKidsInstruction(item.kind)}</p>
+            </div>
+          )}
+        </div>
 
         <div className="subtest-frame">
           {item.kind === 'matrix' && <MatrixSubtest key={item.id} item={item} onAnswer={handleAnswer} softTimeMs={softT} />}

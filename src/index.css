@@ -164,9 +164,27 @@ select.input option { color: #111; background: #fff; }
 
 /* Frame consistente do subteste: garante mesma altura entre questões 1..35 */
 .subtest-frame {
-  min-height: 640px;
+  min-height: 720px;
   display: flex;
   flex-direction: column;
+  gap: 16px;
 }
-.subtest-frame > .card { flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
+.subtest-frame > .card { display: flex; flex-direction: column; }
 .subtest-frame > .card + .card { margin-top: 0; }
+
+/* Slot fixo do reveal (não mexe layout quando aparece resposta) */
+.reveal-slot {
+  min-height: 140px;
+  display: flex;
+  flex-direction: column;
+  justify-content: stretch;
+}
+.reveal-slot:empty { visibility: hidden; }
+
+/* Padronização visual das opções */
+.opt-grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; max-width: 480px; margin: 0 auto; }
+.opt-grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; max-width: 480px; margin: 0 auto; }
+.opt-grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; max-width: 480px; margin: 0 auto; }
+
+.action-row { display: flex; justify-content: space-between; align-items: center; margin-top: 20px; min-height: 56px; }
+.action-row.end { justify-content: flex-end; }

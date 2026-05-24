@@ -40,14 +40,14 @@ export default function NumericSubtest({ item, onAnswer, softTimeMs, locked = fa
       <div className="text-center mb-6" style={{ fontSize: 28, fontWeight: 800, letterSpacing: 2 }}>
         {series.join(', ')}, <span style={{ color: 'var(--accent)' }}>?</span>
       </div>
-      <div className="grid grid-cols-2 gap-3" style={{ maxWidth: 480, margin: '0 auto' }}>
+      <div className="opt-grid-2">
         {options.map((opt: number, i: number) => (
           <button
             key={i}
             onClick={() => !locked && setSelected(i)}
             disabled={locked}
             className={cellClass(i, selected, item, locked)}
-            style={{ aspectRatio: 'auto', padding: '1rem', fontSize: 22, fontWeight: 700 }}
+            style={{ aspectRatio: 'auto', minHeight: 72, padding: '1rem', fontSize: 22, fontWeight: 700 }}
           >
             {opt}
           </button>

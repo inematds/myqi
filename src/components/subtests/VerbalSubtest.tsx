@@ -39,14 +39,14 @@ export default function VerbalSubtest({ item, onAnswer, softTimeMs, locked = fal
       <p className="text-xl mb-6">
         <strong>{pair[0]}</strong> está para <strong>{pair[1]}</strong> assim como <strong>{target}</strong> está para…
       </p>
-      <div className="grid grid-cols-2 gap-3" style={{ maxWidth: 480, margin: '0 auto' }}>
+      <div className="opt-grid-2">
         {options.map((opt: string, i: number) => (
           <button
             key={i}
             onClick={() => !locked && setSelected(i)}
             disabled={locked}
             className={cellClass(i, selected, item, locked)}
-            style={{ aspectRatio: 'auto', padding: '0.9rem', fontWeight: 600 }}
+            style={{ aspectRatio: 'auto', minHeight: 72, padding: '0.9rem', fontWeight: 600 }}
           >
             {opt}
           </button>
