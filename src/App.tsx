@@ -3,6 +3,9 @@ import { useSession } from './store/session';
 import Home from './pages/Home';
 import Test from './pages/Test';
 import Result from './pages/Result';
+import Train from './pages/Train';
+import TrainSession from './pages/TrainSession';
+import Learn from './pages/Learn';
 import { useEffect } from 'react';
 
 export default function App() {
@@ -17,6 +20,9 @@ export default function App() {
       <Route path="/" element={<Home />} />
       <Route path="/test" element={<Test />} />
       <Route path="/result" element={<Result />} />
+      <Route path="/train" element={<Train />} />
+      <Route path="/train/:kind" element={<TrainSession />} />
+      <Route path="/melhorar" element={<Learn />} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );

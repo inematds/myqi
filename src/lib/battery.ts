@@ -54,9 +54,36 @@ function matrixToBattery(m: MatrixData): BatteryItem {
     id: m.id,
     kind: 'matrix',
     difficulty: m.difficulty,
-    data: { matrix: m.matrix, options: m.options },
+    data: { matrix: m.matrix, options: m.options, rule: m.rule },
     correctAnswer: m.correctIndex,
   };
+}
+
+/** Gera um item único por subteste, pra Modo Treino. */
+export function generateOne(kind: SubtestKind, seed: number): BatteryItem {
+  if (kind === 'matrix') return matrixToBattery(genMatrices(seed, 1)[0]);
+  if (kind === 'verbal') return genVerbal(seed, 1)[0];
+  if (kind === 'numeric') return genNumeric(seed, 1)[0];
+  if (kind === 'rotation') return genRotation(seed, 1)[0];
+  return genMemory(seed, 1)[0];
+}
+
+/** Explicação humana para o item após o usuário responder. */
+export function itemExplanation(item: BatteryItem): string {
+  switch (item.kind) {
+    case 'matrix':
+      return `Regra: ${item.data.rule || 'padrão visual'}`;
+    case 'verbal':
+      return `Relação: ${item.data.relation}. "${item.data.pair[0]}" → "${item.data.pair[1]}" segue a mesma lógica de "${item.data.target}" → resposta correta.`;
+    case 'numeric':
+      return `Regra da sequência: ${item.data.rule}.`;
+    case 'rotation':
+      return 'A alternativa correta é a forma original girada — sem ser espelhada. As demais incluem espelhamentos sutis.';
+    case 'memory':
+      return `Sequência mostrada → ordem inversa = ${item.correctAnswer}`;
+    default:
+      return '';
+  }
 }
 
 export function totalBudgetMs(version: Version, profile: string): number {

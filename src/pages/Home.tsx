@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useSession, profileFromAge, Profile } from '../store/session';
 import { buildBattery, Version } from '../lib/battery';
 
@@ -119,6 +119,11 @@ export default function Home() {
           <button className="btn" disabled={!canStart} onClick={begin}>
             Começar teste {version === 'v2' ? '(V2)' : '(V1)'}
           </button>
+
+          <div className="grid grid-cols-2 gap-3 mt-2">
+            <Link to="/train" className="btn-ghost btn">🎯 Modo Treino</Link>
+            <Link to="/melhorar" className="btn-ghost btn">📚 Como melhorar</Link>
+          </div>
         </div>
       </div>
     </div>

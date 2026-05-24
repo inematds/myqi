@@ -1,5 +1,5 @@
 import { useEffect, useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useSession } from '../store/session';
 import { score } from '../lib/scoring';
 import NormalCurve from '../components/Result/NormalCurve';
@@ -136,6 +136,25 @@ export default function Result() {
           Fatores como fadiga, ambiente e familiaridade com testes influenciam o resultado.
         </div>
       </div>
+
+      {result.perSubtest.length > 0 && (() => {
+        const weakest = [...result.perSubtest].sort((a, b) => a.iq - b.iq)[0];
+        return (
+          <div className="max-w-4xl mx-auto mt-4">
+            <div className="card" style={{ background: 'rgba(91,124,250,0.10)' }}>
+              <h3 className="font-semibold mb-1">💡 Recomendação de treino</h3>
+              <p className="muted text-sm mb-3">
+                Seu menor score foi em <strong>{SUBTEST_LABEL[weakest.kind]}</strong> ({weakest.iq}).
+                Praticar este tipo de raciocínio melhora teu desempenho em testes similares.
+                <Link to="/melhorar" style={{ color: 'var(--accent)', marginLeft: 6 }}>Entenda como melhorar →</Link>
+              </p>
+              <Link to={`/train/${weakest.kind}`} className="btn" style={{ textDecoration: 'none' }}>
+                Treinar {SUBTEST_LABEL[weakest.kind]}
+              </Link>
+            </div>
+          </div>
+        );
+      })()}
 
       <div className="max-w-4xl mx-auto flex gap-3 justify-center mt-4 flex-wrap">
         <button className="btn" onClick={() => exportPDF('report')}>Baixar PDF</button>

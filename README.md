@@ -35,6 +35,19 @@ V2 adiciona:
 - **Perfil cognitivo** em gráfico radar
 - **Anti-cheat passivo:** contagem de perdas de foco / troca de aba, exibido no relatório
 
+## V3 (já implementado) — Modo Treino + página educacional
+
+- **Modo Treino:** itens ilimitados por subteste, sem cronômetro, sem score de QI.
+  Após cada resposta exibe a regra correta + explicação. Tracking local de acertos por dia.
+- **Página "Como melhorar"** (`/melhorar`): conteúdo educacional honesto sobre o que
+  realmente aumenta cognição (sono, exercício, leitura, problemas difíceis) e o que
+  é marketing (Lumosity, nootrópicos, Mozart effect).
+- **Recomendação automática** no resultado: aponta o subteste mais fraco e oferece
+  treino direcionado.
+- **Aviso ético:** o app deixa claro que treinar melhora *desempenho em testes*
+  (test familiarity effect) e raciocínios específicos, mas não aumenta diretamente
+  o fator g.
+
 ## Roadmap futuro
 
 - Anti-cheat ativo: fullscreen obrigatório, bloqueio de copy-paste, rate limit por device
