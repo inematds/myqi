@@ -1,6 +1,10 @@
 # MyQI
 
+![MyQI — Teste de QI inteligente · INEMA.CLUB](./public/cover.webp)
+
 Teste de QI online, gratuito e open-source. Baseado em matrizes progressivas (estilo Raven/ICAR) com geração procedural — sem itens proprietários.
+
+🌐 **Demo:** https://myqi.vercel.app  ·  **Por:** [INEMA.CLUB](https://inema.club)
 
 **Live:** publique grátis em GitHub Pages ou Vercel (build estático).
 

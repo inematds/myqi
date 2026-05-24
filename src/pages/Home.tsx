@@ -37,6 +37,25 @@ export default function Home() {
     <div className="min-h-screen flex items-center justify-center p-4">
       <div className="max-w-2xl w-full">
         <BrandHeader />
+        <div
+          className="card"
+          style={{
+            padding: 0,
+            overflow: 'hidden',
+            marginBottom: 16,
+            aspectRatio: '16 / 7',
+            background: '#0b1020',
+          }}
+        >
+          <img
+            src="./cover.webp"
+            alt="MyQI · Teste de QI inteligente"
+            width={1600}
+            loading="eager"
+            decoding="async"
+            style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+          />
+        </div>
         <div className="card">
         <h1 className="title mb-2">MyQI</h1>
         <p className="muted mb-6">
