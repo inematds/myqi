@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useSession, profileFromAge, Profile } from '../store/session';
 import { buildBattery, Version } from '../lib/battery';
+import BrandHeader from '../components/BrandHeader';
 
 const PROFILE_LABEL: Record<Profile, string> = {
   kids: 'Modo Kids (6–12)',
@@ -34,7 +35,9 @@ export default function Home() {
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4">
-      <div className="card max-w-2xl w-full">
+      <div className="max-w-2xl w-full">
+        <BrandHeader />
+        <div className="card">
         <h1 className="title mb-2">MyQI</h1>
         <p className="muted mb-6">
           Teste de raciocínio estilo Raven/ICAR. Estimativa de QI com relatório completo.
@@ -124,6 +127,7 @@ export default function Home() {
             <Link to="/train" className="btn-ghost btn">🎯 Modo Treino</Link>
             <Link to="/melhorar" className="btn-ghost btn">📚 Como melhorar</Link>
           </div>
+        </div>
         </div>
       </div>
     </div>

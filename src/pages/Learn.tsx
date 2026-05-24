@@ -1,9 +1,11 @@
 import { Link } from 'react-router-dom';
+import BrandHeader from '../components/BrandHeader';
 
 export default function Learn() {
   return (
     <div className="min-h-screen p-4">
       <div className="max-w-3xl mx-auto">
+        <BrandHeader />
         <div className="card mb-4">
           <Link to="/" className="muted text-sm">← voltar</Link>
           <h1 className="title mt-2 mb-2">Como melhorar — o que a ciência diz</h1>

@@ -8,6 +8,7 @@ import SubtestRadar from '../components/Result/SubtestRadar';
 import { exportPDF } from '../components/Result/PDFExport';
 import { saveAnonymousSession } from '../lib/supabase';
 import { SUBTEST_LABEL } from '../lib/battery';
+import BrandHeader from '../components/BrandHeader';
 
 export default function Result() {
   const nav = useNavigate();
@@ -45,6 +46,9 @@ export default function Result() {
 
   return (
     <div className="min-h-screen p-4">
+      <div className="max-w-4xl mx-auto">
+        <BrandHeader />
+      </div>
       <div className="max-w-4xl mx-auto" id="report">
         <div className="card mb-4">
           <h1 className="title mb-2">Resultado MyQI · {version.toUpperCase()}</h1>

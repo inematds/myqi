@@ -4,6 +4,8 @@ import { useSession } from '../store/session';
 import Timer from '../components/Timer';
 import { softItemTime } from '../lib/scoring';
 import { totalBudgetMs, SUBTEST_LABEL } from '../lib/battery';
+import BrandHeader from '../components/BrandHeader';
+import KidsHeader from '../components/KidsHeader';
 import MatrixSubtest from '../components/subtests/MatrixSubtest';
 import VerbalSubtest from '../components/subtests/VerbalSubtest';
 import NumericSubtest from '../components/subtests/NumericSubtest';
@@ -88,15 +90,29 @@ export default function Test() {
       <Timer startedAt={startedAt} budgetMs={budget} onExpire={handleExpire} visible={showTimer} />
 
       <div className="max-w-2xl mx-auto p-4">
-        <div className="flex justify-between items-center mb-3 muted text-sm">
-          <span>{SUBTEST_LABEL[item.kind]} — {indexInKind + 1}/{sameKindCount}</span>
-          <span>Progresso geral: {currentIndex + 1}/{items.length}</span>
-        </div>
+        <BrandHeader compact />
 
-        {isFirstOfKind && version === 'v2' && (
+        {profile === 'kids' ? (
+          <KidsHeader current={currentIndex} total={items.length} correct={answers.filter((a) => a.correct).length} />
+        ) : (
+          <div className="flex justify-between items-center mb-3 muted text-sm">
+            <span>{SUBTEST_LABEL[item.kind]} — {indexInKind + 1}/{sameKindCount}</span>
+            <span>Progresso geral: {currentIndex + 1}/{items.length}</span>
+          </div>
+        )}
+
+        {isFirstOfKind && version === 'v2' && profile !== 'kids' && (
           <div className="card mb-3" style={{ background: 'rgba(124,91,250,0.10)' }}>
             <strong>Próximo bloco: {SUBTEST_LABEL[item.kind]}</strong>
             <p className="muted text-sm mt-1">{instructions(item.kind)}</p>
+          </div>
+        )}
+
+        {isFirstOfKind && profile === 'kids' && (
+          <div className="card mb-3" style={{ background: 'linear-gradient(135deg,#fff4cf,#ffd6e8)', border: '3px dashed white' }}>
+            <div style={{ fontSize: 40, textAlign: 'center', marginBottom: 6 }}>{kindEmoji(item.kind)}</div>
+            <strong style={{ fontSize: 22, display: 'block', textAlign: 'center' }}>{kindKidsLabel(item.kind)}</strong>
+            <p className="muted text-sm mt-2 text-center">{kindKidsInstruction(item.kind)}</p>
           </div>
         )}
 
@@ -110,6 +126,28 @@ export default function Test() {
       </div>
     </div>
   );
+}
+
+function kindEmoji(k: string): string {
+  return { matrix: '🧩', verbal: '💬', numeric: '🔢', rotation: '🔄', memory: '🧠' }[k] || '⭐';
+}
+function kindKidsLabel(k: string): string {
+  return {
+    matrix: 'Quebra-cabeça das formas!',
+    verbal: 'Jogo das palavras!',
+    numeric: 'Aventura dos números!',
+    rotation: 'Girando formas!',
+    memory: 'Super memória!',
+  }[k] || 'Próximo jogo!';
+}
+function kindKidsInstruction(k: string): string {
+  return {
+    matrix: 'Olhe as formas e descubra qual peça falta no quebra-cabeça!',
+    verbal: 'Veja como as primeiras palavras combinam e ache a palavra certa!',
+    numeric: 'Descubra o próximo número da sequência mágica!',
+    rotation: 'Encontre a forma que é só uma versão girada — sem ser invertida!',
+    memory: 'Vou mostrar números rapidinho. Depois você digita de trás pra frente!',
+  }[k] || '';
 }
 
 function instructions(kind: string): string {

@@ -1,6 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { SUBTEST_LABEL, SubtestKind } from '../lib/battery';
 import { getStats } from '../lib/trainingStore';
+import BrandHeader from '../components/BrandHeader';
 
 const KINDS: SubtestKind[] = ['matrix', 'verbal', 'numeric', 'rotation', 'memory'];
 
@@ -17,6 +18,7 @@ export default function Train() {
   return (
     <div className="min-h-screen p-4">
       <div className="max-w-3xl mx-auto">
+        <BrandHeader />
         <div className="card mb-4">
           <Link to="/" className="muted text-sm">← voltar</Link>
           <h1 className="title mt-2 mb-2">Modo Treino</h1>

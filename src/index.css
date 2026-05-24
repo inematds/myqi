@@ -18,14 +18,47 @@
 
 /* Profile themes */
 .theme-kids {
-  --bg: #fff7e6;
+  --bg: linear-gradient(135deg, #fff7d6 0%, #ffd6e8 50%, #d6e8ff 100%);
   --surface: #ffffff;
-  --text: #2a2a2a;
-  --muted: #6b6b6b;
-  --accent: #ff7a59;
-  --radius: 20px;
+  --text: #2a2a3e;
+  --muted: #6b6b85;
+  --accent: #ff5e8e;
+  --accent-2: #5b9bff;
+  --accent-3: #ffc23c;
+  --radius: 24px;
   --fs-base: 20px;
-  --fs-title: 36px;
+  --fs-title: 40px;
+}
+.theme-kids body, body.theme-kids { background: var(--bg); }
+.theme-kids .card {
+  border: 3px solid rgba(255,255,255,0.9);
+  box-shadow: 0 12px 40px rgba(255,94,142,0.18), 0 4px 12px rgba(91,155,255,0.12);
+}
+.theme-kids .title {
+  background: linear-gradient(90deg, #ff5e8e, #ffc23c, #5b9bff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.theme-kids .btn {
+  font-size: 22px;
+  padding: 1rem 1.5rem;
+  border-radius: 999px;
+  box-shadow: 0 6px 0 rgba(0,0,0,0.10);
+  transition: transform .1s, box-shadow .1s;
+}
+.theme-kids .btn:active { transform: translateY(4px); box-shadow: 0 2px 0 rgba(0,0,0,0.10); }
+.theme-kids .option-cell {
+  border-width: 4px;
+  border-radius: 18px;
+  box-shadow: 0 4px 0 rgba(255,94,142,0.10);
+  transition: transform .12s;
+}
+.theme-kids .option-cell:hover { transform: translateY(-3px); }
+.theme-kids .option-cell.selected {
+  background: linear-gradient(135deg, #ffe0eb, #fff4cf);
+  border-color: var(--accent);
+  transform: scale(1.05);
 }
 .theme-teen {
   --bg: #0f1424;

@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { SUBTEST_LABEL, SubtestKind, generateOne, itemExplanation, BatteryItem } from '../lib/battery';
 import { logTraining } from '../lib/trainingStore';
+import BrandHeader from '../components/BrandHeader';
 import MatrixSubtest from '../components/subtests/MatrixSubtest';
 import VerbalSubtest from '../components/subtests/VerbalSubtest';
 import NumericSubtest from '../components/subtests/NumericSubtest';
@@ -43,6 +44,7 @@ export default function TrainSession() {
   return (
     <div className="min-h-screen p-4">
       <div className="max-w-2xl mx-auto">
+        <BrandHeader compact />
         <div className="flex justify-between items-center mb-3">
           <Link to="/train" className="muted text-sm">← voltar</Link>
           <span className="muted text-sm">
