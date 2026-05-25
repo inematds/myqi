@@ -171,6 +171,10 @@ select.input option { color: #111; background: #fff; }
 }
 .subtest-frame > .card { display: flex; flex-direction: column; }
 .subtest-frame > .card + .card { margin-top: 0; }
+/* última card empurra os botões para a base do frame — altura fixa entre subtests */
+.subtest-frame > .card:last-child { flex: 1; }
+.subtest-frame > .card:last-child > .flex:last-child { margin-top: auto; }
+.subtest-frame .action-row { margin-top: auto; }
 
 /* Slot fixo do reveal (não mexe layout quando aparece resposta) */
 .reveal-slot {

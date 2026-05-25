@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import VisitCounter from './VisitCounter';
 
 interface Props { compact?: boolean; }
 
@@ -43,6 +44,7 @@ export default function BrandHeader({ compact = false }: Props) {
           INEMA.CLUB
         </a>
       </Link>
+      <VisitCounter />
     </div>
   );
 }
