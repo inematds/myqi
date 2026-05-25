@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import type { BatteryItem } from '../../lib/battery';
 
 interface Props {
@@ -8,11 +8,14 @@ interface Props {
   locked?: boolean;
   userSelected?: string | null;
   hideSkip?: boolean;
+  externalAction?: boolean;
+  submitSignal?: number;
+  onCanSubmitChange?: (can: boolean) => void;
 }
 
 type Phase = 'intro' | 'showing' | 'input';
 
-export default function MemorySubtest({ item, onAnswer, locked = false, userSelected, hideSkip = false }: Props) {
+export default function MemorySubtest({ item, onAnswer, locked = false, userSelected, hideSkip = false, externalAction = false, submitSignal = 0, onCanSubmitChange }: Props) {
   const digits: string[] = item.data.digits;
   const [phase, setPhase] = useState<Phase>(locked ? 'input' : 'intro');
   const [showIdx, setShowIdx] = useState(0);
@@ -46,6 +49,17 @@ export default function MemorySubtest({ item, onAnswer, locked = false, userSele
     onAnswer(input, timeMs, timedOut, correct);
   }
 
+  useEffect(() => {
+    onCanSubmitChange?.(!locked && phase === 'input' && input.length > 0);
+  }, [input, phase, locked, onCanSubmitChange]);
+  const lastSig = useRef(submitSignal);
+  useEffect(() => {
+    if (submitSignal !== lastSig.current) {
+      lastSig.current = submitSignal;
+      if (!locked && phase === 'input' && input.length > 0) submit(false);
+    }
+  }, [submitSignal, locked, phase, input]);
+
   const isWrong = locked && userSelected !== item.correctAnswer;
 
   return (
@@ -77,10 +91,12 @@ export default function MemorySubtest({ item, onAnswer, locked = false, userSele
             autoFocus
             inputMode="numeric"
           />
-          <div className="flex justify-center gap-3 mt-3">
-            {!hideSkip && <button className="btn-ghost btn" onClick={() => submit(true)}>Pular</button>}
-            <button className="btn" disabled={input.length === 0} onClick={() => submit(false)}>Confirmar</button>
-          </div>
+          {!externalAction && (
+            <div className="flex justify-center gap-3 mt-3">
+              {!hideSkip && <button className="btn-ghost btn" onClick={() => submit(true)}>Pular</button>}
+              <button className="btn" disabled={input.length === 0} onClick={() => submit(false)}>Confirmar</button>
+            </div>
+          )}
         </div>
       )}
 

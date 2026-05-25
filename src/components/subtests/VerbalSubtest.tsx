@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import type { BatteryItem } from '../../lib/battery';
 
 interface Props {
@@ -8,6 +8,9 @@ interface Props {
   locked?: boolean;
   userSelected?: number | null;
   hideSkip?: boolean;
+  externalAction?: boolean;
+  submitSignal?: number;
+  onCanSubmitChange?: (can: boolean) => void;
 }
 
 function cellClass(i: number, selected: number | null, item: BatteryItem, locked: boolean) {
@@ -18,7 +21,7 @@ function cellClass(i: number, selected: number | null, item: BatteryItem, locked
   return base;
 }
 
-export default function VerbalSubtest({ item, onAnswer, softTimeMs, locked = false, userSelected, hideSkip = false }: Props) {
+export default function VerbalSubtest({ item, onAnswer, softTimeMs, locked = false, userSelected, hideSkip = false, externalAction = false, submitSignal = 0, onCanSubmitChange }: Props) {
   const [selected, setSelected] = useState<number | null>(userSelected ?? null);
   const [startedAt] = useState(() => Date.now());
   const [elapsed, setElapsed] = useState(0);
@@ -31,6 +34,15 @@ export default function VerbalSubtest({ item, onAnswer, softTimeMs, locked = fal
   const submit = (timedOut = false) => {
     onAnswer(selected, Date.now() - startedAt, timedOut, selected === item.correctAnswer);
   };
+
+  useEffect(() => { onCanSubmitChange?.(!locked && selected !== null); }, [selected, locked, onCanSubmitChange]);
+  const lastSig = useRef(submitSignal);
+  useEffect(() => {
+    if (submitSignal !== lastSig.current) {
+      lastSig.current = submitSignal;
+      if (!locked && selected !== null) submit(false);
+    }
+  }, [submitSignal, locked, selected]);
 
   const { pair, target, options } = item.data;
   return (
@@ -52,7 +64,7 @@ export default function VerbalSubtest({ item, onAnswer, softTimeMs, locked = fal
           </button>
         ))}
       </div>
-      {!locked && (
+      {!locked && !externalAction && (
         <div className={`flex mt-5 ${hideSkip ? 'justify-end' : 'justify-between'}`}>
           {!hideSkip && <button className="btn-ghost btn" onClick={() => submit(true)}>Pular</button>}
           <button className="btn" disabled={selected === null} onClick={() => submit(false)}>Confirmar</button>

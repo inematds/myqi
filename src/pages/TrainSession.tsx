@@ -27,12 +27,18 @@ export default function TrainSession() {
     { item: generateOne(k, Math.floor(Math.random() * 1e9)), userSelected: null, correct: null },
   ]);
   const [idx, setIdx] = useState(0);
+  const [canSubmit, setCanSubmit] = useState(false);
+  const [submitSignal, setSubmitSignal] = useState(0);
 
   // reset when kind changes (navigating to a different subtest)
   useEffect(() => {
     setHistory([{ item: generateOne(k, Math.floor(Math.random() * 1e9)), userSelected: null, correct: null }]);
     setIdx(0);
+    setCanSubmit(false);
   }, [k]);
+
+  // reset canSubmit on item change
+  useEffect(() => { setCanSubmit(false); }, [idx]);
 
   const current = history[idx];
   const answered = current.correct !== null;
@@ -70,7 +76,7 @@ export default function TrainSession() {
   const acc = totals.length ? Math.round((correctCount / totals.length) * 100) : 0;
 
   return (
-    <div className="min-h-screen p-4" style={{ paddingBottom: 96 }}>
+    <div className="min-h-screen p-4">
       <div className="max-w-2xl mx-auto">
         <BrandHeader compact />
 
@@ -98,6 +104,9 @@ export default function TrainSession() {
               locked={answered}
               userSelected={current.userSelected}
               hideSkip
+              externalAction
+              submitSignal={submitSignal}
+              onCanSubmitChange={setCanSubmit}
             />
           )}
           {k === 'verbal' && (
@@ -109,6 +118,9 @@ export default function TrainSession() {
               locked={answered}
               userSelected={current.userSelected}
               hideSkip
+              externalAction
+              submitSignal={submitSignal}
+              onCanSubmitChange={setCanSubmit}
             />
           )}
           {k === 'numeric' && (
@@ -120,6 +132,9 @@ export default function TrainSession() {
               locked={answered}
               userSelected={current.userSelected}
               hideSkip
+              externalAction
+              submitSignal={submitSignal}
+              onCanSubmitChange={setCanSubmit}
             />
           )}
           {k === 'rotation' && (
@@ -131,6 +146,9 @@ export default function TrainSession() {
               locked={answered}
               userSelected={current.userSelected}
               hideSkip
+              externalAction
+              submitSignal={submitSignal}
+              onCanSubmitChange={setCanSubmit}
             />
           )}
           {k === 'memory' && (
@@ -142,8 +160,34 @@ export default function TrainSession() {
               locked={answered}
               userSelected={current.userSelected}
               hideSkip
+              externalAction
+              submitSignal={submitSignal}
+              onCanSubmitChange={setCanSubmit}
             />
           )}
+        </div>
+
+        <div className="flex items-center gap-2 mt-4" style={{ justifyContent: 'space-between' }}>
+          <button className="btn-ghost btn" disabled={idx === 0} onClick={goPrev}>
+            ← Anterior
+          </button>
+          {!answered ? (
+            <button
+              className="btn"
+              disabled={!canSubmit}
+              onClick={() => setSubmitSignal((s) => s + 1)}
+              style={{ minWidth: 180 }}
+            >
+              Confirmar
+            </button>
+          ) : (
+            <span className="muted text-sm" style={{ minWidth: 180, textAlign: 'center' }}>
+              {current.correct ? '✓ Correto' : '✗ Errado'}
+            </span>
+          )}
+          <button className="btn" onClick={goNext} disabled={!answered}>
+            {idx + 1 < history.length ? 'Próximo →' : 'Novo item →'}
+          </button>
         </div>
 
         <div className="reveal-slot mt-4">
@@ -172,29 +216,6 @@ export default function TrainSession() {
         <p className="muted text-xs mt-4 text-center" data-keep>
           Itens são gerados aleatoriamente. Você pode voltar pra revisar exercícios anteriores.
         </p>
-      </div>
-
-      <div
-        style={{
-          position: 'fixed',
-          left: 0,
-          right: 0,
-          bottom: 0,
-          padding: '12px 16px',
-          background: 'rgba(15,17,28,0.92)',
-          backdropFilter: 'blur(10px)',
-          borderTop: '1px solid rgba(255,255,255,0.08)',
-          zIndex: 50,
-        }}
-      >
-        <div className="max-w-2xl mx-auto flex justify-between gap-2">
-          <button className="btn-ghost btn" disabled={idx === 0} onClick={goPrev}>
-            ← Anterior
-          </button>
-          <button className="btn" onClick={goNext} disabled={!answered && current.userSelected === null}>
-            {idx + 1 < history.length ? 'Próximo →' : answered ? 'Novo item →' : 'Próximo →'}
-          </button>
-        </div>
       </div>
     </div>
   );
